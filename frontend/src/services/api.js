@@ -3,7 +3,7 @@ import axios from "axios";
 // Configurable via VITE_API_BASE_URL (see .env.example) so the same build
 // can point at localhost in dev and a deployed backend in production,
 // instead of a hardcoded localhost URL.
-const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api/fund";
+const baseURL = import.meta.env.VITE_API_BASE_URL || "https://mutualfundsperformance-production.up.railway.app/api/fund";
 
 const api = axios.create({
     baseURL,

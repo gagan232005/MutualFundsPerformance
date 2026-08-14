@@ -1,0 +1,100 @@
+/* ===== Background ===== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background: radial-gradient(circle at top, #00111f, #000810 70%);
+    color: #d9e6f2;
+}
+
+/* ===== Center Container ===== */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: 40px;
+}
+
+/* ===== Heading ===== */
+.title {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #40cfff;
+    text-shadow: 0 0 15px rgba(64, 207, 255, 0.7), 0 0 25px rgba(0, 150, 255, 0.8);
+}
+
+/* ===== Input Field ===== */
+.predict-box {
+    background: rgba(0, 25, 45, 0.6);
+    border: 1px solid rgba(0, 180, 255, 0.4);
+    border-radius: 12px;
+    padding: 15px 20px;
+    width: 500px;
+    font-size: 18px;
+    color: #d8f7ff;
+    outline: none;
+    margin-right: 10px;
+    transition: 0.3s;
+}
+
+.predict-box:focus {
+    border-color: #00d8ff;
+    box-shadow: 0 0 12px #00cfff;
+}
+
+/* ===== Predict Button ===== */
+.predict-btn {
+    padding: 15px 30px;
+    font-size: 18px;
+    background: linear-gradient(145deg, #00eaff, #008cff);
+    color: #001018;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.predict-btn:hover {
+    box-shadow: 0 0 20px #00cfff;
+    transform: scale(1.05);
+}
+
+/* ===== Result Card ===== */
+.result-card {
+    margin-top: 40px;
+    width: 850px;
+    padding: 25px;
+    background: rgba(0, 25, 45, 0.8);
+    border-radius: 18px;
+    border: 1px solid rgba(0, 180, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 180, 255, 0.2);
+    text-align: center;
+}
+
+/* File Name */
+.result-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #40cfff;
+    text-shadow: 0 0 12px rgba(0, 180, 255, 0.7);
+}
+
+/* Prediction info */
+.result-text {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+/* ===== Chart Container ===== */
+.chart-section {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(0, 40, 70, 0.6);
+    border: 1px solid rgba(0, 180, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 150, 255, 0.2);
+}

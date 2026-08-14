@@ -23,6 +23,10 @@ public class AiAssistantService {
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
+    // ---------------------------------------------------------
+    // GROK CONFIGURATION
+    // ---------------------------------------------------------
+
     @Value("${ai.provider:grok}")
     private String provider;
 
@@ -34,6 +38,10 @@ public class AiAssistantService {
 
     @Value("${ai.grok-url:https://api.x.ai/v1/chat/completions}")
     private String grokUrl;
+
+    // ---------------------------------------------------------
+    // SYSTEM PROMPT
+    // ---------------------------------------------------------
 
     private static final String SYSTEM_PROMPT = """
             You are an AI assistant embedded in a mutual fund performance dashboard.
@@ -59,6 +67,10 @@ public class AiAssistantService {
             Keep answers to 2-5 sentences unless the user asks for more detail.
             """;
 
+    // ---------------------------------------------------------
+    // MAIN METHOD
+    // ---------------------------------------------------------
+
     public String ask(String question, Object fundContext) {
 
         if (question == null || question.isBlank()) {
@@ -83,27 +95,22 @@ public class AiAssistantService {
         }
 
         String userInput =
-                SYSTEM_PROMPT
-                        + "\n\n"
-                        + "Fund data (JSON):\n"
+                "Fund data (JSON):\n"
                         + contextJson
                         + "\n\n"
-                        + "Question: "
+                        + "Question:\n"
                         + question;
 
         try {
-            if ("grok".equalsIgnoreCase(provider)) {
-                return callGrok(userInput);
-            }
 
-            throw new FundDataException(
-                    "Unsupported AI provider: " + provider
-            );
+            return callGrok(userInput);
 
         } catch (FundDataException e) {
+
             throw e;
 
         } catch (Exception e) {
+
             throw new FundDataException(
                     "Grok request failed: " + e.getMessage(),
                     e
@@ -111,26 +118,38 @@ public class AiAssistantService {
         }
     }
 
+    // ---------------------------------------------------------
+    // GROK CHAT COMPLETIONS API
+    // ---------------------------------------------------------
+
     private String callGrok(String userInput) throws Exception {
 
         Map<String, Object> systemMessage = Map.of(
-                "role", "system",
-                "content", SYSTEM_PROMPT
+                "role",
+                "system",
+                "content",
+                SYSTEM_PROMPT
         );
 
         Map<String, Object> userMessage = Map.of(
-                "role", "user",
+                "role",
+                "user",
                 "content",
-                "Fund data (JSON):\n"
-                        + userInput
+                userInput
         );
 
         Map<String, Object> body = Map.of(
-                "model", model,
-                "messages", List.of(
+                "model",
+                model,
+                "messages",
+                List.of(
                         systemMessage,
                         userMessage
-                )
+                ),
+                "temperature",
+                0.2,
+                "stream",
+                false
         );
 
         String jsonBody =
@@ -139,20 +158,26 @@ public class AiAssistantService {
         HttpRequest request =
                 HttpRequest.newBuilder()
                         .uri(URI.create(grokUrl))
-                        .timeout(Duration.ofSeconds(30))
+                        .timeout(Duration.ofSeconds(60))
+
                         .header(
                                 "Content-Type",
                                 "application/json"
                         )
+
+                        // IMPORTANT:
+                        // Grok/xAI requires Bearer authentication.
                         .header(
                                 "Authorization",
                                 "Bearer " + apiKey
                         )
+
                         .POST(
                                 HttpRequest.BodyPublishers.ofString(
                                         jsonBody
                                 )
                         )
+
                         .build();
 
         HttpResponse<String> response =
@@ -160,6 +185,10 @@ public class AiAssistantService {
                         request,
                         HttpResponse.BodyHandlers.ofString()
                 );
+
+        // -----------------------------------------------------
+        // ERROR HANDLING
+        // -----------------------------------------------------
 
         if (response.statusCode() >= 300) {
 
@@ -171,6 +200,10 @@ public class AiAssistantService {
             );
         }
 
+        // -----------------------------------------------------
+        // PARSE GROK RESPONSE
+        // -----------------------------------------------------
+
         JsonNode root =
                 objectMapper.readTree(response.body());
 
@@ -178,24 +211,28 @@ public class AiAssistantService {
                 root.path("choices");
 
         if (!choices.isArray() || choices.isEmpty()) {
+
             throw new FundDataException(
                     "Grok returned no response choices."
             );
         }
 
-        String result =
-                choices
-                        .get(0)
-                        .path("message")
-                        .path("content")
-                        .asText();
+        JsonNode firstChoice =
+                choices.get(0);
 
-        if (result == null || result.isBlank()) {
+        JsonNode message =
+                firstChoice.path("message");
+
+        String answer =
+                message.path("content").asText();
+
+        if (answer == null || answer.isBlank()) {
+
             throw new FundDataException(
                     "Grok returned an empty response."
             );
         }
 
-        return result.trim();
+        return answer.trim();
     }
 }

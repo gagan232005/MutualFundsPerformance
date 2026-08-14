@@ -11,6 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -22,25 +23,17 @@ public class AiAssistantService {
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
-    // ---------------------------------------------------------
-    // GEMINI CONFIGURATION
-    // ---------------------------------------------------------
-
-    @Value("${ai.provider:gemini}")
+    @Value("${ai.provider:grok}")
     private String provider;
 
     @Value("${ai.api-key:}")
     private String apiKey;
 
-    @Value("${ai.gemini-model:gemini-3.6-flash}")
-    private String geminiModel;
+    @Value("${ai.model:grok-3-mini}")
+    private String model;
 
-    private static final String GEMINI_URL =
-            "https://generativelanguage.googleapis.com/v1beta/interactions";
-
-    // ---------------------------------------------------------
-    // SYSTEM PROMPT
-    // ---------------------------------------------------------
+    @Value("${ai.grok-url:https://api.x.ai/v1/chat/completions}")
+    private String grokUrl;
 
     private static final String SYSTEM_PROMPT = """
             You are an AI assistant embedded in a mutual fund performance dashboard.
@@ -65,10 +58,6 @@ public class AiAssistantService {
 
             Keep answers to 2-5 sentences unless the user asks for more detail.
             """;
-
-    // ---------------------------------------------------------
-    // MAIN METHOD
-    // ---------------------------------------------------------
 
     public String ask(String question, Object fundContext) {
 
@@ -103,32 +92,45 @@ public class AiAssistantService {
                         + question;
 
         try {
-            return callGemini(userInput);
+            if ("grok".equalsIgnoreCase(provider)) {
+                return callGrok(userInput);
+            }
+
+            throw new FundDataException(
+                    "Unsupported AI provider: " + provider
+            );
 
         } catch (FundDataException e) {
             throw e;
 
         } catch (Exception e) {
             throw new FundDataException(
-                    "Gemini request failed: " + e.getMessage(),
+                    "Grok request failed: " + e.getMessage(),
                     e
             );
         }
     }
 
-    // ---------------------------------------------------------
-    // GEMINI INTERACTIONS API
-    // ---------------------------------------------------------
+    private String callGrok(String userInput) throws Exception {
 
-    private String callGemini(String userInput) throws Exception {
+        Map<String, Object> systemMessage = Map.of(
+                "role", "system",
+                "content", SYSTEM_PROMPT
+        );
+
+        Map<String, Object> userMessage = Map.of(
+                "role", "user",
+                "content",
+                "Fund data (JSON):\n"
+                        + userInput
+        );
 
         Map<String, Object> body = Map.of(
-
-                "model",
-                geminiModel,
-
-                "input",
-                userInput
+                "model", model,
+                "messages", List.of(
+                        systemMessage,
+                        userMessage
+                )
         );
 
         String jsonBody =
@@ -136,25 +138,21 @@ public class AiAssistantService {
 
         HttpRequest request =
                 HttpRequest.newBuilder()
-                        .uri(URI.create(GEMINI_URL))
+                        .uri(URI.create(grokUrl))
                         .timeout(Duration.ofSeconds(30))
-
                         .header(
                                 "Content-Type",
                                 "application/json"
                         )
-
                         .header(
-                                "x-goog-api-key",
-                                apiKey
+                                "Authorization",
+                                "Bearer " + apiKey
                         )
-
                         .POST(
                                 HttpRequest.BodyPublishers.ofString(
                                         jsonBody
                                 )
                         )
-
                         .build();
 
         HttpResponse<String> response =
@@ -163,85 +161,41 @@ public class AiAssistantService {
                         HttpResponse.BodyHandlers.ofString()
                 );
 
-        // -----------------------------------------------------
-        // ERROR HANDLING
-        // -----------------------------------------------------
-
         if (response.statusCode() >= 300) {
 
             throw new FundDataException(
-                    "Gemini API error (HTTP "
+                    "Grok API error (HTTP "
                             + response.statusCode()
                             + "): "
                             + response.body()
             );
         }
 
-        // -----------------------------------------------------
-        // PARSE INTERACTIONS RESPONSE
-        // -----------------------------------------------------
-
         JsonNode root =
                 objectMapper.readTree(response.body());
 
-        /*
-         * Interactions API response contains:
-         *
-         * steps -> model_output -> content -> text
-         */
+        JsonNode choices =
+                root.path("choices");
 
-        JsonNode steps =
-                root.path("steps");
-
-        if (!steps.isArray() || steps.isEmpty()) {
-
+        if (!choices.isArray() || choices.isEmpty()) {
             throw new FundDataException(
-                    "Gemini returned no response steps."
+                    "Grok returned no response choices."
             );
         }
 
-        StringBuilder result =
-                new StringBuilder();
+        String result =
+                choices
+                        .get(0)
+                        .path("message")
+                        .path("content")
+                        .asText();
 
-        for (JsonNode step : steps) {
-
-            String type =
-                    step.path("type").asText();
-
-            if (!"model_output".equals(type)) {
-                continue;
-            }
-
-            JsonNode content =
-                    step.path("content");
-
-            if (!content.isArray()) {
-                continue;
-            }
-
-            for (JsonNode block : content) {
-
-                if ("text".equals(
-                        block.path("type").asText()
-                )) {
-
-                    String text =
-                            block.path("text").asText();
-
-                    if (text != null && !text.isBlank()) {
-                        result.append(text);
-                    }
-                }
-            }
-        }
-
-        if (result.isEmpty()) {
-
+        if (result == null || result.isBlank()) {
             throw new FundDataException(
-                    "Gemini returned an empty response."
+                    "Grok returned an empty response."
             );
         }
 
-        return result.toString().trim();
+        return result.trim();
     }
 }

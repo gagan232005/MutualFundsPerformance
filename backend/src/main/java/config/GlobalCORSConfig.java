@@ -12,16 +12,12 @@ public class GlobalCORSConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOriginPatterns(
-                                // any localhost port -- covers Vite falling back to
-                                // 5174, 5175, etc. when 5173 is already in use
                                 "http://localhost:*",
                                 "https://victorious-manifestation-production.up.railway.app",
                                 "https://mutualfundsperformanceprediction.up.railway.app",
                                 "https://mutualfundsperformanceprediction-production.up.railway.app",
-                                "https://mutualfundsperformance-production.up.railway.app/amc-list",
-                                "https://mutualfundsperformance-production.up.railway.app/api/fund/amc-list",
-                                "mutual-funds-performance-prediction-platform.up.railway.app"
-                                    )
+                                "https://mutual-funds-performance-prediction-platform.up.railway.app"
+                        )
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true);

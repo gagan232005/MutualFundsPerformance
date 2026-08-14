@@ -151,7 +151,10 @@ Clone the Mutual Funds Performance Prediction repository and move into the proje
 
 ```bash
 git clone https://github.com/gagan232005/MutualFundsPerformance.git
-cd MutualFundsPerformance```
+cd MutualFundsPerformance
+```
+
+
 
 ## 2️⃣ ⚙️ Backend Setup
 

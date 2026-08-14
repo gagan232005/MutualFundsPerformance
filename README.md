@@ -1,7 +1,7 @@
 
 # Mutual Funds Performance Prediction Platform
 
-A full-stack mutual fund analytics platform delivering live NAV tracking, multi-model machine learning forecasting, and AI-driven insights for data-informed investment decisions.
+A full-stack platform for mutual fund analysis, built on live NAV data, multi-model forecasting, and AI-driven insights to help investors make more informed decisions.
 
 The platform enables investors to track and analyze mutual fund performance through a unified interface — combining live NAV history, SIP projections, and multi-model forecasting (Linear Regression, Random Forest, and Drift) with comparative accuracy metrics. An integrated AI assistant interprets these results to support clearer, more informed investment decisions.
 

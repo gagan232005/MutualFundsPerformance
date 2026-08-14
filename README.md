@@ -1,11 +1,11 @@
 
 # Mutual Funds Performance Prediction Platform
 
-Full-stack mutual fund analytics platform with live NAV data, multi-model ML forecasting, and AI-powered fund insights for investors.
+A full-stack mutual fund analytics platform delivering live NAV tracking, multi-model machine learning forecasting, and AI-driven insights for data-informed investment decisions.
 
-Mutual Funds Performance Prediction helps investors to track and analyze real mutual fund performance in one place. View live NAV history, SIP projections, and multi-model forecasts (Linear Regression, Random Forest, Drift) with accuracy comparisons, and use an AI-powered assistant to understand what the numbers mean for your investment decisions.
+The platform enables investors to track and analyze mutual fund performance through a unified interface — combining live NAV history, SIP projections, and multi-model forecasting (Linear Regression, Random Forest, and Drift) with comparative accuracy metrics. An integrated AI assistant interprets these results to support clearer, more informed investment decisions.
 
-Built for investors who want a faster and smarter way to evaluate mutual fund performance.
+Designed for investors seeking a reliable, data-driven approach to mutual fund performance evaluation.
 
 ## 🛠️ Technology & Deployment
 
@@ -24,15 +24,15 @@ Built for investors who want a faster and smarter way to evaluate mutual fund pe
 
 ## 📸 Screenshots
 
-### 📊 Mutual Fund Dashboard
+### 🖥️ Mutual Fund Dashboard
 <img width="1894" height="905" alt="image" src="https://github.com/user-attachments/assets/097b38f4-b917-4223-95bf-4da24cc6aaf3" />
 
 
-### 📈 EDA Analysis
+### 🔍 EDA Analysis
 <img width="1879" height="900" alt="image" src="https://github.com/user-attachments/assets/cc4abf79-31d0-4bee-9f2d-df20ef9c12ad" />
 
 
-### 🤖 ML Prediction
+### 🧠 ML Prediction
 <img width="1886" height="899" alt="image" src="https://github.com/user-attachments/assets/3b74caa9-d85f-4817-b6d8-833218804c97" />
 
 
@@ -41,15 +41,15 @@ Built for investors who want a faster and smarter way to evaluate mutual fund pe
 
 
 
-### 💰 SIP Investment Analysis
+### 💹 SIP Investment Analysis
 <img width="1881" height="891" alt="image" src="https://github.com/user-attachments/assets/30ee0d8d-6ff6-49ba-9aca-aa9cf1d510d9" />
 
 
-### ⭐ Algorithms Performance and Accuracy Rating
+### 🏆 Accuracy & Performance Ranking
 <img width="1126" height="485" alt="image" src="https://github.com/user-attachments/assets/141ba077-ac4f-471e-a14e-bcb09b79a15f" />
 
 
-### 📊 Model Comparison
+### ⚖️ Model  Comparison
 <img width="1887" height="900" alt="image" src="https://github.com/user-attachments/assets/9f199418-28eb-445a-a5bc-cfe678764798" />
 
 
@@ -60,16 +60,16 @@ Built for investors who want a faster and smarter way to evaluate mutual fund pe
 
 ## Features
 
-* 📊 Analyze mutual fund performance using historical NAV data
+* 📋 Analyze mutual fund performance using historical NAV data
 * 📈 Interactive charts for NAV trends, returns, and performance analysis
-* 🤖 Predict future NAV using Linear Regression, Drift, and Random Forest models
+* 🔮 Predict future NAV using Linear Regression, Drift, and Random Forest models
 * 🧠 Compare machine learning models using accuracy and performance metrics
 * 💰 Calculate and visualize SIP returns and investment growth
 * ⭐ Evaluate fund risk levels and performance ratings
 * 🔍 Select AMC and individual mutual fund schemes for analysis
-* 📋 View historical NAV data and statistical insights
-* 💬 AI-powered assistant for mutual fund analysis and insights
-* ⚡ Responsive React interface with Spring Boot REST APIs and live NAV data
+* 🗂️ View historical NAV data and statistical insights
+* 🧩 AI-powered assistant for mutual fund analysis and insights
+* 🔗 Responsive React interface with Spring Boot REST APIs and live NAV data
 
 
 
@@ -77,13 +77,13 @@ Built for investors who want a faster and smarter way to evaluate mutual fund pe
 
 Mutual Funds Performance Prediction combines historical fund analysis, machine learning-based prediction, and interactive investment insights to help users evaluate mutual fund performance and make more informed investment decisions.
 
-### 📊 1. Select & Analyze
+### 🔎 1. Select & Analyze
 
 Select a **AMC** and **mutual fund scheme** to analyze its historical NAV and performance data.
 
 ⬇️
 
-### 🔎 2. Exploratory Data Analysis
+### 📊 2. Exploratory Data Analysis
 
 Perform **EDA** to identify **NAV trends, return patterns, statistical insights, and performance variations** using interactive visualizations.
 
@@ -107,13 +107,12 @@ Combine **EDA, predictions, ratings, and investment insights** to help users **e
 
 
 ### 🚀 Workflow
-
-**📊 Select Fund → 🔎 EDA → 🤖 Predict → 💰 Evaluate SIP → 💡 Make Decisions**
+**🗃️ Select Fund → 🔬 EDA → 🔮 Predict → 💹 Evaluate SIP → ✅ Make Decisions**
 
 > **Mutual Funds Performance Prediction combines exploratory data analysis, machine learning-based predictions, and investment insights to help users evaluate fund performance and make informed investment decisions.**
 ## 🛠️ Tech Stack
 
-### 🎨 Frontend
+### 📱 Frontend
 
 ![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white)
@@ -133,7 +132,7 @@ Combine **EDA, predictions, ratings, and investment insights** to help users **e
 ![Apache Commons Math](https://img.shields.io/badge/Apache_Commons_Math-3.6.1-D22128?style=for-the-badge&logo=apache&logoColor=white)
 ![Weka](https://img.shields.io/badge/Weka-3.8.6-8B5CF6?style=for-the-badge)
 
-### 🤖 Machine Learning
+### 🧮 Machine Learning
 
 ![Weka](https://img.shields.io/badge/Weka-3.8.6-8B5CF6?style=for-the-badge)
 ![Linear Regression](https://img.shields.io/badge/Linear_Regression-ML-FF9800?style=for-the-badge)
@@ -150,20 +149,17 @@ Combine **EDA, predictions, ratings, and investment insights** to help users **e
 
 ![Railway](https://img.shields.io/badge/Railway-Deployment-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)
 
-# 🚀 Run Locally
-
+# ⚡ Run Locally
 Get the Mutual Funds Performance Prediction system running locally in a few simple steps.
 
 ## 🧰 Prerequisites
-
 Make sure you have the following installed:
-
 - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" width="18"/> **Java 17+**
 - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" width="18"/> **Node.js 18+**
-- 📦 **npm**
-- 🔨 **Maven**
-- 🤖 **Groq API Key** for AI-powered features
-
+- 📥 **npm**
+- 🧱 **Maven**
+- 🔑 **Groq API Key** for AI-powered features
+  
 ## 1️⃣ 📥 Clone the Repository
 
 Clone the Mutual Funds Performance Prediction repository and move into the project directory.
@@ -234,30 +230,27 @@ The frontend will be available at:
 - 💻 **Application:** http://localhost:5173
 
 ## 🔒 Environment Variables
-
 For security, never commit sensitive API credentials or expose them in the source code.
-
 The following environment variables should remain private:
-
-- 🤖 **AI_PROVIDER** – AI service provider used by the application
-- 🧠 **AI_MODEL** – AI model used for AI-powered features
-- 🔑 **AI_API_KEY** – API key for accessing the AI service
-- ⚙️ **Production environment variables** – Keep deployment-specific configuration private
+- 🏷️ **AI_PROVIDER** – AI service provider used by the application
+- 🧬 **AI_MODEL** – AI model used for AI-powered features
+- 🗝️ **AI_API_KEY** – API key for accessing the AI service
+- 🚧 **Production environment variables** – Keep deployment-specific configuration private
 
 ---
+
 > 💡 **Note:** Run the backend and frontend in separate terminals. The backend must be running for the frontend to communicate with the API.
 
 ## 🗺️ Roadmap
-
-- 📊 **Advanced Fund Analysis** — Expand performance analysis with additional financial metrics and insights.
-- 🤖 **Enhanced AI Insights** — Improve AI-powered fund analysis and provide more personalized investment insights.
-- 📈 **Advanced Predictions** — Enhance prediction models with additional historical and market-related factors.
-- 💰 **Investment Planning** — Extend SIP analysis with more flexible investment scenarios and comparisons.
-- 🔍 **Fund Comparison** — Introduce deeper comparisons across multiple mutual fund schemes.
+- 📐 **Advanced Fund Analysis** — Expand performance analysis with additional financial metrics and insights.
+- 🪄 **Enhanced AI Insights** — Improve AI-powered fund analysis and provide more personalized investment insights.
+- 🎯 **Advanced Predictions** — Enhance prediction models with additional historical and market-related factors.
+- 💹 **Investment Planning** — Extend SIP analysis with more flexible investment scenarios and comparisons.
+- ⚖️ **Fund Comparison** — Introduce deeper comparisons across multiple mutual fund schemes.
 - 📊 **Advanced Analytics** — Add more interactive visualizations and detailed performance analytics.
-- ☁️ **Production Improvements** — Continue improving deployment, performance, reliability, and scalability.
-
-> 🚀 **Mutual Funds Performance Prediction Platform is continuously evolving to deliver smarter fund analysis, reliable predictions, and better investment insights for users.**
+- 🏗️ **Production Improvements** — Continue improving deployment, performance, reliability, and scalability.
+  
+> 📈 **Committed to continuous improvement — smarter analysis, sharper predictions, and better insights for every investor.**
 
 ## 👨‍💻 Author
 
@@ -269,4 +262,4 @@ Built and maintained with ❤️ by **Gagan V**
 
 🔗 **GitHub:** [Gagan](https://github.com/gagan232005/)
 
-> 🚀 **Mutual Funds Performance Prediction Platform is an independent project developed to explore machine learning and AI-driven financial analysis, helping users understand mutual fund performance and make more informed investment decisions.**
+> 💡 **Built as an independent project to bridge machine learning with real-world investing — turning raw mutual fund data into insights users can actually act on.**

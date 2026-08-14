@@ -139,8 +139,8 @@ Get the Mutual Funds Performance Prediction system running locally in a few simp
 
 Make sure you have the following installed:
 
-- ☕ **Java 17+**
-- 🟢 **Node.js 18+**
+- <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" width="18"/> **Java 17+**
+- <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" width="18"/> **Node.js 18+**
 - 📦 **npm**
 - 🔨 **Maven**
 - 🤖 **Groq API Key** for AI-powered features

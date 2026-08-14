@@ -17,6 +17,7 @@ Designed for investors seeking a reliable, data-driven approach to mutual fund p
 ![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
 ![Groq](https://img.shields.io/badge/Groq-LLM_API-F55036?style=for-the-badge)
 ![Railway](https://img.shields.io/badge/Backend-Railway-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)
+
 ## Demo
 
 🌐 **Live Application:https://mutual-funds-performance-prediction-platform.up.railway.app/
@@ -38,7 +39,6 @@ Designed for investors seeking a reliable, data-driven approach to mutual fund p
 
 ### 📉 Historical NAV Forecast
 <img width="1892" height="899" alt="image" src="https://github.com/user-attachments/assets/19ef579d-a0de-418a-a4c7-e76ebb1cca20" />
-
 
 
 ### 💹 SIP Investment Analysis
@@ -107,9 +107,12 @@ Combine **EDA, predictions, ratings, and investment insights** to help users **e
 
 
 ### 🚀 Workflow
+
 **🗃️ Select Fund → 🔬 EDA → 🔮 Predict → 💹 Evaluate SIP → ✅ Make Decisions**
 
 > **Mutual Funds Performance Prediction combines exploratory data analysis, machine learning-based predictions, and investment insights to help users evaluate fund performance and make informed investment decisions.**
+
+
 ## 🛠️ Tech Stack
 
 ### 📱 Frontend
@@ -144,13 +147,13 @@ Combine **EDA, predictions, ratings, and investment insights** to help users **e
 ![Groq](https://img.shields.io/badge/Groq-API-F55036?style=for-the-badge&logo=groq&logoColor=white)
 ![Llama](https://img.shields.io/badge/Llama_3.3-70B_Versatile-0467DF?style=for-the-badge&logo=meta&logoColor=white)
 
-
 ### ☁️ Deployment
 
 ![Railway](https://img.shields.io/badge/Railway-Deployment-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)
 
 # ⚡ Run Locally
 Get the Mutual Funds Performance Prediction system running locally in a few simple steps.
+
 
 ## 🧰 Prerequisites
 Make sure you have the following installed:
@@ -160,6 +163,7 @@ Make sure you have the following installed:
 - 🧱 **Maven**
 - 🔑 **Groq API Key** for AI-powered features
   
+
 ## 1️⃣ 📥 Clone the Repository
 
 Clone the Mutual Funds Performance Prediction repository and move into the project directory.
@@ -168,8 +172,6 @@ Clone the Mutual Funds Performance Prediction repository and move into the proje
 git clone https://github.com/gagan232005/MutualFundsPerformance.git
 cd MutualFundsPerformance
 ```
-
-
 
 ## 2️⃣ ⚙️ Backend Setup
 
@@ -198,6 +200,7 @@ mvn spring-boot:run
 The backend will be available at:
 
 🌐 API: http://localhost:8080
+
 
 ## 3️⃣ 🎨 Frontend Setup
 
@@ -229,6 +232,7 @@ The frontend will be available at:
 
 - 💻 **Application:** http://localhost:5173
 
+
 ## 🔒 Environment Variables
 For security, never commit sensitive API credentials or expose them in the source code.
 The following environment variables should remain private:
@@ -241,6 +245,7 @@ The following environment variables should remain private:
 
 > 💡 **Note:** Run the backend and frontend in separate terminals. The backend must be running for the frontend to communicate with the API.
 
+
 ## 🗺️ Roadmap
 - 📐 **Advanced Fund Analysis** — Expand performance analysis with additional financial metrics and insights.
 - 🪄 **Enhanced AI Insights** — Improve AI-powered fund analysis and provide more personalized investment insights.
@@ -252,14 +257,16 @@ The following environment variables should remain private:
   
 > 📈 **Committed to continuous improvement — smarter analysis, sharper predictions, and better insights for every investor.**
 
+
 ## 👨‍💻 Author
 
 Built and maintained with ❤️ by **Gagan V**
 
 🎓 Computer Science Engineering Student
 
-🔗 **LinkedIn:** [Gagan V](https://www.linkedin.com/in/gagan232005/)
+🔗 **LinkedIn:** [GAGAN V](https://www.linkedin.com/in/gagan232005/)
 
-🔗 **GitHub:** [Gagan](https://github.com/gagan232005/)
+🔗 **GitHub:** [G@ganV](https://github.com/gagan232005/)
+
 
 > 💡 **Built as an independent project to bridge machine learning with real-world investing — turning raw mutual fund data into insights users can actually act on.**

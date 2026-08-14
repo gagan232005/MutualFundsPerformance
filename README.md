@@ -25,20 +25,38 @@ Built for investors who want a faster and smarter way to evaluate mutual fund pe
 ## 📸 Screenshots
 
 ### 📊 Mutual Fund Dashboard
+<img width="1894" height="905" alt="image" src="https://github.com/user-attachments/assets/097b38f4-b917-4223-95bf-4da24cc6aaf3" />
+
 
 ### 📈 EDA Analysis
+<img width="1879" height="900" alt="image" src="https://github.com/user-attachments/assets/cc4abf79-31d0-4bee-9f2d-df20ef9c12ad" />
 
-### 🤖 AI-Powered Prediction
+
+### 🤖 ML Prediction
+<img width="1886" height="899" alt="image" src="https://github.com/user-attachments/assets/3b74caa9-d85f-4817-b6d8-833218804c97" />
+
+
+### 📉 Historical NAV Forecast
+<img width="1892" height="899" alt="image" src="https://github.com/user-attachments/assets/19ef579d-a0de-418a-a4c7-e76ebb1cca20" />
+
+
 
 ### 💰 SIP Investment Analysis
+<img width="1881" height="891" alt="image" src="https://github.com/user-attachments/assets/30ee0d8d-6ff6-49ba-9aca-aa9cf1d510d9" />
 
-### 📉 Historical NAV Analysis
 
-### ⭐ Fund Performance Rating
+### ⭐ Algorithms Performance and Accuracy Rating
+<img width="1126" height="485" alt="image" src="https://github.com/user-attachments/assets/141ba077-ac4f-471e-a14e-bcb09b79a15f" />
 
-### 📊 Fund Comparison
+
+### 📊 Model Comparison
+<img width="1887" height="900" alt="image" src="https://github.com/user-attachments/assets/9f199418-28eb-445a-a5bc-cfe678764798" />
+
 
 ### 💬 AI Financial Assistant
+<img width="541" height="775" alt="image" src="https://github.com/user-attachments/assets/c52f3b93-c9dd-4fe9-8ee8-3951d4391f2f" />
+
+
 ## Features
 
 * 📊 Analyze mutual fund performance using historical NAV data

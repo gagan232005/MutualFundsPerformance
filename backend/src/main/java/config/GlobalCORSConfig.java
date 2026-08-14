@@ -18,8 +18,10 @@ public class GlobalCORSConfig {
                                 "https://victorious-manifestation-production.up.railway.app",
                                 "https://mutualfundsperformanceprediction.up.railway.app",
                                 "https://mutualfundsperformanceprediction-production.up.railway.app",
+                                "https://mutualfundsperformance-production.up.railway.app/amc-list",
+                                "https://mutualfundsperformance-production.up.railway.app/api/fund/amc-list",
                                 "mutual-funds-performance-prediction-platform.up.railway.app"
-                        )
+                                    )
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true);

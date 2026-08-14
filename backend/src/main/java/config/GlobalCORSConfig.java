@@ -17,7 +17,8 @@ public class GlobalCORSConfig {
                                 "http://localhost:*",
                                 "https://victorious-manifestation-production.up.railway.app",
                                 "https://mutualfundsperformanceprediction.up.railway.app",
-                                "https://mutualfundsperformanceprediction-production.up.railway.app"
+                                "https://mutualfundsperformanceprediction-production.up.railway.app",
+                                "https://stunning-duckanoo-731bc0.netlify.app"
                         )
                         .allowedMethods("*")
                         .allowedHeaders("*")

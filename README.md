@@ -54,7 +54,8 @@ Built for investors who want a faster and smarter way to evaluate mutual fund pe
 
 
 ### 💬 AI Financial Assistant
-<img width="541" height="775" alt="image" src="https://github.com/user-attachments/assets/c52f3b93-c9dd-4fe9-8ee8-3951d4391f2f" />
+<img width="1885" height="900" alt="image" src="https://github.com/user-attachments/assets/abe70468-2377-4913-bb52-eac68947346a" />
+
 
 
 ## Features

@@ -18,7 +18,7 @@ public class GlobalCORSConfig {
                                 "https://victorious-manifestation-production.up.railway.app",
                                 "https://mutualfundsperformanceprediction.up.railway.app",
                                 "https://mutualfundsperformanceprediction-production.up.railway.app",
-                                "https://stunning-duckanoo-731bc0.netlify.app"
+                                "https://mutual-funds-intelligence.netlify.app"
                         )
                         .allowedMethods("*")
                         .allowedHeaders("*")

@@ -24,20 +24,20 @@ public class AiAssistantService {
             .build();
 
     // ---------------------------------------------------------
-    // GROK CONFIGURATION
+    // GROQ CONFIGURATION
     // ---------------------------------------------------------
 
-    @Value("${ai.provider:grok}")
+    @Value("${ai.provider:groq}")
     private String provider;
 
     @Value("${ai.api-key:}")
     private String apiKey;
 
-    @Value("${ai.model:grok-3-mini}")
+    @Value("${ai.model:llama-3.3-70b-versatile}")
     private String model;
 
-    @Value("${ai.grok-url:https://api.x.ai/v1/chat/completions}")
-    private String grokUrl;
+    @Value("${ai.groq-url:https://api.groq.com/openai/v1/chat/completions}")
+    private String groqUrl;
 
     // ---------------------------------------------------------
     // SYSTEM PROMPT
@@ -102,24 +102,24 @@ public class AiAssistantService {
                         + question;
 
         try {
-            return callGrok(userInput);
+            return callGroq(userInput);
 
         } catch (FundDataException e) {
             throw e;
 
         } catch (Exception e) {
             throw new FundDataException(
-                    "Grok request failed: " + e.getMessage(),
+                    "Groq request failed: " + e.getMessage(),
                     e
             );
         }
     }
 
     // ---------------------------------------------------------
-    // GROK API
+    // GROQ CHAT COMPLETIONS API
     // ---------------------------------------------------------
 
-    private String callGrok(String userInput) throws Exception {
+    private String callGroq(String userInput) throws Exception {
 
         Map<String, Object> systemMessage = Map.of(
                 "role",
@@ -154,7 +154,7 @@ public class AiAssistantService {
 
         HttpRequest request =
                 HttpRequest.newBuilder()
-                        .uri(URI.create(grokUrl))
+                        .uri(URI.create(groqUrl))
                         .timeout(Duration.ofSeconds(60))
                         .header(
                                 "Content-Type",
@@ -182,8 +182,9 @@ public class AiAssistantService {
         // -----------------------------------------------------
 
         if (response.statusCode() >= 300) {
+
             throw new FundDataException(
-                    "Grok API error (HTTP "
+                    "Groq API error (HTTP "
                             + response.statusCode()
                             + "): "
                             + response.body()
@@ -201,8 +202,9 @@ public class AiAssistantService {
                 root.path("choices");
 
         if (!choices.isArray() || choices.isEmpty()) {
+
             throw new FundDataException(
-                    "Grok returned no response choices."
+                    "Groq returned no response choices."
             );
         }
 
@@ -213,8 +215,9 @@ public class AiAssistantService {
                 message.path("content").asText();
 
         if (answer == null || answer.isBlank()) {
+
             throw new FundDataException(
-                    "Grok returned an empty response."
+                    "Groq returned an empty response."
             );
         }
 

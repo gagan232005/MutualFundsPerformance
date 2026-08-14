@@ -1,6 +1,11 @@
-# Mutual Funds Performance Prediction
 
-A full-stack web application for analyzing **real** Indian mutual fund NAV performance — pulling live historical data, forecasting future NAV with multiple machine learning models, calculating SIP returns, and letting users ask an AI assistant to explain the results.
+# Mutual Funds Performance Prediction Platform
+
+Full-stack mutual fund analytics platform with live NAV data, multi-model ML forecasting, and AI-powered fund insights for investors.
+
+Mutual Funds Performance Prediction helps investors to track and analyze real mutual fund performance in one place. View live NAV history, SIP projections, and multi-model forecasts (Linear Regression, Random Forest, Drift) with accuracy comparisons, and use an AI-powered assistant to understand what the numbers mean for your investment decisions.
+
+Built for investors who want a faster and smarter way to evaluate mutual fund performance.
 
 ## 🛠️ Technology & Deployment
 
@@ -12,154 +17,234 @@ A full-stack web application for analyzing **real** Indian mutual fund NAV perfo
 ![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
 ![Groq](https://img.shields.io/badge/Groq-LLM_API-F55036?style=for-the-badge)
 ![Railway](https://img.shields.io/badge/Backend-Railway-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)
-
 ## Demo
 
-🌐 **Live Application:** https://mutual-funds-performance-prediction-platform.up.railway.app/
+🌐 **Live Application:https://mutual-funds-performance-prediction-platform.up.railway.app/
 
-## Overview
-
-This project tracks NAV (Net Asset Value) performance for real mutual fund schemes across five major Indian AMCs — SBI, HDFC, ICICI Prudential, Axis, and Kotak. It fetches live historical NAV data from AMFI's public feed, trains multiple forecasting models on that data in real time, compares their accuracy on a held-out test split, and forecasts NAV six months into the future. A built-in AI assistant, grounded in the fund's actual fetched data, answers plain-language questions about the results.
-
-The goal was to build something closer to a real fintech analytics tool than a static ML demo: no pre-baked predictions, no canned chatbot responses — every number on screen is computed from data fetched (or a model trained) at request time.
-
-## ✨ Key Features
-
-- **Live NAV Data** — historical NAV data for each fund is fetched in real time from AMFI's public data feed via [mfapi.in](https://www.mfapi.in), resampled to monthly points over the last 3 years.
-- **Multi-Model NAV Forecasting** — every request trains and compares three forecasting approaches on the fund's actual historical data:
-  - **Linear Regression** — trained per-request on the time-indexed NAV series
-  - **Random Forest** — genuine Weka `RandomForest` classifier trained per-request
-  - **Drift-based forecasting** — extrapolates the recent average period-over-period change
-- **Algorithm Comparison & Accuracy Leaderboard** — models are evaluated with an 80/20 train/test split using MAPE (Mean Absolute Percentage Error), ranked, and given a star rating — all computed live, no static numbers.
-- **6-Month Forward Forecast** — projects NAV for the next 6 months across all three models, with a side-by-side comparison chart.
-- **SIP Calculator** — projects invested amount, future value, and returns for a Systematic Investment Plan based on a fund's real historical NAV data.
-- **Risk & Volatility Stats** — computes mean NAV, standard deviation, and a volatility-based risk classification (Low / Medium / High / Very High).
-- **AI Fund Assistant** — a chat panel backed by a real LLM call (Groq's Llama 3.3 70B by default). The model is given the fund's actual fetched stats, model accuracy, and forecast as context and answers investor questions from that data.
-- **NAV Trend Visualization** — actual vs. predicted NAV charts (Recharts / Chart.js) with dark/light theming.
-- **PDF Report Export** — downloadable performance report generated client-side with jsPDF and html2canvas.
-- **Centralized Error Handling** — a global exception handler returns clean, consistent JSON error responses instead of raw stack traces or silently-wrong zeroed data; the frontend surfaces failures as an in-app error banner.
-
-## 🧱 Architecture
-
-```
-┌────────────────────┐        REST / JSON        ┌──────────────────────────┐
-│   React + Vite SPA   │  ─────────────────────▶  │   Spring Boot REST API    │
-│  (charts, forms, PDF) │  ◀─────────────────────  │  (FundController)         │
-└────────────────────┘                            └────────────┬─────────────┘
-                                                                 │
-                              ┌──────────────────────────────────┼──────────────────────────────┐
-                              ▼                                  ▼                              ▼
-                    ┌───────────────────┐             ┌───────────────────┐         ┌────────────────────┐
-                    │  NavDataService     │             │ TimeSeriesModel-   │         │ AiAssistantService   │
-                    │  (live AMFI data     │             │ Service (Weka       │         │ (Groq chat            │
-                    │  via mfapi.in,        │             │ Linear Regression /  │         │ completions API)      │
-                    │  in-memory caching)   │             │ Random Forest, drift) │         │                       │
-                    └───────────────────┘             └───────────────────┘         └────────────────────┘
-```
-
-- The frontend never talks to mfapi.in or Groq directly — the Spring Boot backend is the single source of truth, fetches/caches live data, trains models per request, and proxies the AI call so the API key stays server-side.
-- CORS is explicitly restricted to the known frontend origins via a global CORS configuration.
-
-## 📁 Project Structure
-
-```
-MutualFundsPerformance/
-├── backend/
-│   ├── src/main/java/com/gagan/mutualfunds/
-│   │   ├── controller/FundController.java      # REST endpoints
-│   │   ├── service/
-│   │   │   ├── NavDataService.java              # Live NAV fetch + caching (mfapi.in)
-│   │   │   ├── TimeSeriesModelService.java      # Weka Linear Regression / Random Forest / drift forecasting
-│   │   │   └── AiAssistantService.java          # Groq LLM chat completions integration
-│   │   ├── config/                              # CORS & app configuration
-│   │   └── exception/                           # Custom exception + global error handler
-│   └── src/main/resources/application.properties
-└── frontend/
-    ├── src/
-    │   ├── pages/          # Dashboard, Prediction, Analytics, SIP, Model Comparison, About
-    │   ├── components/     # Charts, prediction panel, AI chat, SIP calculator, tables, etc.
-    │   └── services/api.js # Axios client for the backend API
-    └── .env.example
-```
-
-## 🤖 ML Models & Forecasting Approach
-
-All three models below are trained (or computed) **at request time** on the fund's live historical NAV series — nothing is pre-trained or hardcoded:
-
-| Model | Description |
-|---|---|
-| **Linear Regression** | Ordinary least-squares regression over (month index → NAV), used both for the in-sample accuracy comparison and the forward forecast. |
-| **Random Forest** | Weka `RandomForest` (200 iterations, fixed seed) trained on (month index → NAV); falls back to a last-value hold if training fails, so the endpoint never breaks. |
-| **Drift** | Classic drift forecasting — extrapolates the average of the last several period-over-period NAV changes forward from the most recent value. |
-
-**Evaluation:** each fund's monthly NAV history is split 80/20 into train/test. All three models are evaluated on the held-out test portion using **MAPE (Mean Absolute Percentage Error)**, converted to an accuracy percentage, ranked, and mapped to a 1–5 star rating.
-
-## 🔌 API Endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/fund/amc-list` | List of supported AMCs |
-| `GET` | `/api/fund/fund-list?name={amc}` | Real fund schemes under a given AMC, live from AMFI |
-| `GET` | `/api/fund/by-fund?fund={schemeCode}` | Historical NAV, mean/volatility/risk stats, and algorithm accuracy comparison |
-| `GET` | `/api/fund/predict?fund={schemeCode}` | 6-month forward NAV forecast across Drift / Linear Regression / Random Forest |
-| `POST` | `/api/fund/ai-assistant` | AI assistant call — `{ question, context }` → `{ answer }` |
-
-## 🚀 Run Locally
-
-### Prerequisites
-
-- ☕ **Java 17+** and **Maven**
-- 🟢 **Node.js 18+** and **npm**
-- 🌐 Internet access (the backend calls mfapi.in for live NAV data, and optionally the Groq API)
-
-### 1️⃣ Clone the repository
-
-```bash
-git clone <your-repo-url>
-cd MutualFundsPerformance
-```
-
-### 2️⃣ Backend setup
-
-```bash
-cd backend
-mvn spring-boot:run
-```
-
-Runs on `http://localhost:8080`.
-
-To enable the AI assistant, set an API key before starting the backend:
-
-```bash
-export AI_API_KEY=gsk_...
-export AI_PROVIDER=groq
-export AI_MODEL=llama-3.3-70b-versatile
-```
-
-Without a key set, every other feature still works — the assistant returns a clear "not configured" message instead of failing silently.
-
-### 3️⃣ Frontend setup
-
-```bash
-cd frontend
-cp .env.example .env   # adjust VITE_API_BASE_URL if needed
-npm install
-npm run dev
-```
-
-Runs on `http://localhost:5173`.
 
 ## 📸 Screenshots
 
-> _Add screenshots of the Dashboard, Prediction, Analytics, and SIP pages here to showcase the UI._
+### 📊 Mutual Fund Dashboard
 
-## 🗺️ Future Enhancements
+### 📈 EDA Analysis
 
-- Add authentication for personalized SIP tracking and saved watchlists
-- Expand time-series forecasting with more advanced techniques (e.g. ARIMA, LSTM)
-- Support benchmark/index comparison alongside individual fund forecasts
-- Add automated tests for the forecasting and accuracy-evaluation logic
+### 🤖 AI-Powered Prediction
+
+### 💰 SIP Investment Analysis
+
+### 📉 Historical NAV Analysis
+
+### ⭐ Fund Performance Rating
+
+### 📊 Fund Comparison
+
+### 💬 AI Financial Assistant
+## Features
+
+* 📊 Analyze mutual fund performance using historical NAV data
+* 📈 Interactive charts for NAV trends, returns, and performance analysis
+* 🤖 Predict future NAV using Linear Regression, Drift, and Random Forest models
+* 🧠 Compare machine learning models using accuracy and performance metrics
+* 💰 Calculate and visualize SIP returns and investment growth
+* ⭐ Evaluate fund risk levels and performance ratings
+* 🔍 Select AMC and individual mutual fund schemes for analysis
+* 📋 View historical NAV data and statistical insights
+* 💬 AI-powered assistant for mutual fund analysis and insights
+* ⚡ Responsive React interface with Spring Boot REST APIs and live NAV data
+
+
+
+## How It Works
+
+Mutual Funds Performance Prediction combines historical fund analysis, machine learning-based prediction, and interactive investment insights to help users evaluate mutual fund performance and make more informed investment decisions.
+
+### 📊 1. Select & Analyze
+
+Select a **AMC** and **mutual fund scheme** to analyze its historical NAV and performance data.
+
+⬇️
+
+### 🔎 2. Exploratory Data Analysis
+
+Perform **EDA** to identify **NAV trends, return patterns, statistical insights, and performance variations** using interactive visualizations.
+
+⬇️
+
+### 🤖 3. Predict
+
+Apply **machine learning models** to historical fund data to generate performance predictions and insights.
+
+⬇️
+
+### 💰 4. Evaluate Investment
+
+Use the **SIP calculator** to estimate potential returns and understand investment growth.
+
+⬇️
+
+### 💡 5. Make Informed Decisions
+
+Combine **EDA, predictions, ratings, and investment insights** to help users **evaluate and compare mutual funds**.
+
+
+### 🚀 Workflow
+
+**📊 Select Fund → 🔎 EDA → 🤖 Predict → 💰 Evaluate SIP → 💡 Make Decisions**
+
+> **Mutual Funds Performance Prediction combines exploratory data analysis, machine learning-based predictions, and investment insights to help users evaluate fund performance and make informed investment decisions.**
+## 🛠️ Tech Stack
+
+### 🎨 Frontend
+
+![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-1.13-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
+![Chart.js](https://img.shields.io/badge/Chart.js-4.5-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-3.7-8884D8?style=for-the-badge)
+![React Router](https://img.shields.io/badge/React_Router-6-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white)
+![Lucide React](https://img.shields.io/badge/Lucide_React-Icons-F56565?style=for-the-badge)
+
+### ⚙️ Backend
+
+![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.2-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
+![Apache Commons Math](https://img.shields.io/badge/Apache_Commons_Math-3.6.1-D22128?style=for-the-badge&logo=apache&logoColor=white)
+![Weka](https://img.shields.io/badge/Weka-3.8.6-8B5CF6?style=for-the-badge)
+
+### 🤖 Machine Learning
+
+![Weka](https://img.shields.io/badge/Weka-3.8.6-8B5CF6?style=for-the-badge)
+![Linear Regression](https://img.shields.io/badge/Linear_Regression-ML-FF9800?style=for-the-badge)
+![Random Forest](https://img.shields.io/badge/Random_Forest-ML-2E7D32?style=for-the-badge)
+![Drift](https://img.shields.io/badge/Drift-Prediction-607D8B?style=for-the-badge)
+
+### 🤖 AI
+
+![Groq](https://img.shields.io/badge/Groq-API-F55036?style=for-the-badge&logo=groq&logoColor=white)
+![Llama](https://img.shields.io/badge/Llama_3.3-70B_Versatile-0467DF?style=for-the-badge&logo=meta&logoColor=white)
+
+
+### ☁️ Deployment
+
+![Railway](https://img.shields.io/badge/Railway-Deployment-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)
+
+# 🚀 Run Locally
+
+Get the Mutual Funds Performance Prediction system running locally in a few simple steps.
+
+## 🧰 Prerequisites
+
+Make sure you have the following installed:
+
+- ☕ **Java 17+**
+- 🟢 **Node.js 18+**
+- 📦 **npm**
+- 🔨 **Maven**
+- 🤖 **Groq API Key** for AI-powered features
+
+## 1️⃣ 📥 Clone the Repository
+
+Clone the Mutual Funds Performance Prediction repository and move into the project directory.
+
+```bash
+git clone https://github.com/gagan232005/MutualFundsPerformance.git
+cd MutualFundsPerformance```
+
+## 2️⃣ ⚙️ Backend Setup
+
+Navigate to the backend directory:
+
+```bash
+cd backend
+
+Build the project using Maven:
+
+```bash
+mvn clean install
+```
+
+Set your Groq API key:
+
+```bash
+set AI_API_KEY=your_groq_api_key
+```
+
+Start the Spring Boot backend:
+```bash
+mvn spring-boot:run
+```
+
+The backend will be available at:
+
+🌐 API: http://localhost:8080
+
+## 3️⃣ 🎨 Frontend Setup
+
+Open a new terminal and navigate to the frontend directory:
+
+```bash
+cd frontend
+```
+
+Install the frontend dependencies:
+
+```bash
+npm install
+```
+
+Create a `.env` file inside the `frontend` directory:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+Start the Vite development server:
+
+```bash
+npm run dev
+```
+
+The frontend will be available at:
+
+- 💻 **Application:** http://localhost:5173
+
+## 🔒 Environment Variables
+
+For security, never commit sensitive API credentials or expose them in the source code.
+
+The following environment variables should remain private:
+
+- 🤖 **AI_PROVIDER** – AI service provider used by the application
+- 🧠 **AI_MODEL** – AI model used for AI-powered features
+- 🔑 **AI_API_KEY** – API key for accessing the AI service
+- ⚙️ **Production environment variables** – Keep deployment-specific configuration private
+
+---
+> 💡 **Note:** Run the backend and frontend in separate terminals. The backend must be running for the frontend to communicate with the API.
+
+## 🗺️ Roadmap
+
+- 📊 **Advanced Fund Analysis** — Expand performance analysis with additional financial metrics and insights.
+- 🤖 **Enhanced AI Insights** — Improve AI-powered fund analysis and provide more personalized investment insights.
+- 📈 **Advanced Predictions** — Enhance prediction models with additional historical and market-related factors.
+- 💰 **Investment Planning** — Extend SIP analysis with more flexible investment scenarios and comparisons.
+- 🔍 **Fund Comparison** — Introduce deeper comparisons across multiple mutual fund schemes.
+- 📊 **Advanced Analytics** — Add more interactive visualizations and detailed performance analytics.
+- ☁️ **Production Improvements** — Continue improving deployment, performance, reliability, and scalability.
+
+> 🚀 **Mutual Funds Performance Prediction Platform is continuously evolving to deliver smarter fund analysis, reliable predictions, and better investment insights for users.**
 
 ## 👨‍💻 Author
 
-Built and maintained by **Gagan**
+Built and maintained with ❤️ by **Gagan V**
+
+🎓 Computer Science Engineering Student
+
+🔗 **LinkedIn:** [Gagan V](https://www.linkedin.com/in/gagan232005/)
+
+🔗 **GitHub:** [Gagan](https://github.com/gagan232005/)
+
+> 🚀 **Mutual Funds Performance Prediction Platform is an independent project developed to explore machine learning and AI-driven financial analysis, helping users understand mutual fund performance and make more informed investment decisions.**

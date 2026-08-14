@@ -102,15 +102,12 @@ public class AiAssistantService {
                         + question;
 
         try {
-
             return callGrok(userInput);
 
         } catch (FundDataException e) {
-
             throw e;
 
         } catch (Exception e) {
-
             throw new FundDataException(
                     "Grok request failed: " + e.getMessage(),
                     e
@@ -119,7 +116,7 @@ public class AiAssistantService {
     }
 
     // ---------------------------------------------------------
-    // GROK CHAT COMPLETIONS API
+    // GROK API
     // ---------------------------------------------------------
 
     private String callGrok(String userInput) throws Exception {
@@ -159,25 +156,19 @@ public class AiAssistantService {
                 HttpRequest.newBuilder()
                         .uri(URI.create(grokUrl))
                         .timeout(Duration.ofSeconds(60))
-
                         .header(
                                 "Content-Type",
                                 "application/json"
                         )
-
-                        // IMPORTANT:
-                        // Grok/xAI requires Bearer authentication.
                         .header(
                                 "Authorization",
                                 "Bearer " + apiKey
                         )
-
                         .POST(
                                 HttpRequest.BodyPublishers.ofString(
                                         jsonBody
                                 )
                         )
-
                         .build();
 
         HttpResponse<String> response =
@@ -191,7 +182,6 @@ public class AiAssistantService {
         // -----------------------------------------------------
 
         if (response.statusCode() >= 300) {
-
             throw new FundDataException(
                     "Grok API error (HTTP "
                             + response.statusCode()
@@ -201,7 +191,7 @@ public class AiAssistantService {
         }
 
         // -----------------------------------------------------
-        // PARSE GROK RESPONSE
+        // RESPONSE
         // -----------------------------------------------------
 
         JsonNode root =
@@ -211,23 +201,18 @@ public class AiAssistantService {
                 root.path("choices");
 
         if (!choices.isArray() || choices.isEmpty()) {
-
             throw new FundDataException(
                     "Grok returned no response choices."
             );
         }
 
-        JsonNode firstChoice =
-                choices.get(0);
-
         JsonNode message =
-                firstChoice.path("message");
+                choices.get(0).path("message");
 
         String answer =
                 message.path("content").asText();
 
         if (answer == null || answer.isBlank()) {
-
             throw new FundDataException(
                     "Grok returned an empty response."
             );

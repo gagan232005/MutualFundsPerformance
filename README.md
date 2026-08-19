@@ -16,7 +16,7 @@ Designed for investors seeking a reliable, data-driven approach to mutual fund p
 ![Weka](https://img.shields.io/badge/Weka-ML_Library-D71920?style=for-the-badge)
 ![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
 ![Groq](https://img.shields.io/badge/Groq-LLM_API-F55036?style=for-the-badge)
-![Railway](https://img.shields.io/badge/Backend-Railway-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)
+![Railway](https://img.shields.io/badge/Deployment-Railway-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)
 
 ## Demo
 
